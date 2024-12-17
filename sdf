@@ -8,12 +8,12 @@ import heapq
 # Funkcja do generowania danych
 def generate_data_integer(size, order="random"):
     data = [random.randint(0, 1000) for _ in range(size)]
-    data_type = "integer"
+    #data_type = "integer"
     if order == "sorted":
         data.sort()
     elif order == "reverse":
         data.sort(reverse=True)
-    elif order == "partially_sorted":
+    elif order == "partially sorted":
         partially_sorted_size = size // 2
         data[:partially_sorted_size] = sorted(data[:partially_sorted_size])
 
@@ -22,12 +22,12 @@ def generate_data_integer(size, order="random"):
 
 def generate_data_float(size, order="random"):
     data = [random.uniform(0, 1000) for _ in range(size)]
-    data_type = "float"
+    #data_type = "float"
     if order == "sorted":
         data.sort()
     elif order == "reverse":
         data.sort(reverse=True)
-    elif order == "partially_sorted":
+    elif order == "partially sorted":
         partially_sorted_size = size // 2
         data[:partially_sorted_size] = sorted(data[:partially_sorted_size])
 
@@ -122,10 +122,10 @@ def measure_sort_time(sort_function, data):
 
 # Główna funkcja testująca i zapisująca wyniki
 def run_tests_and_save_to_csv(output_file):
-    min_value = 1000000
-    max_value = 10000000
-    data_sizes = [random.randint(min_value, max_value) for _ in range(7)]
-    data_characteristics = ["random", "sorted", "reverse", "partially_sorted"]
+    min_value = 100000
+    max_value = 1000000
+    data_sizes = [random.randint(min_value, max_value) for _ in range(3)]
+    data_characteristics = ["random", "sorted", "reverse", "partially sorted"]
     sort_algorithms = {
         "Quick Sort": quick_sort,
         "Merge Sort": merge_sort,
@@ -134,7 +134,7 @@ def run_tests_and_save_to_csv(output_file):
         "Heap Sort": heap_sort
     }
 
-    results = []
+    results_array = []
 
     with open(output_file, mode='w', newline='') as csv_file:
         writer = csv.writer(csv_file)
@@ -147,26 +147,28 @@ def run_tests_and_save_to_csv(output_file):
                     time_taken = measure_sort_time(algo_func, data)
                     data_type = "integer"
                     writer.writerow([algo_name, size, characteristic, time_taken, data_type])
-                    results.append((algo_name, size, characteristic, time_taken, data_type))
+                    results_array.append((algo_name, size, characteristic, time_taken, data_type))
                     print(
-                        f"Algorytm: {algo_name}, Rozmiar: {size}, Charakterystyka: {characteristic}, Czas: {time_taken:.6f} sekund, Typ danych: integer")
+                        f"(Próba: {counter}) Algorytm: {algo_name}, Rozmiar: {size}, Charakterystyka: {characteristic},"
+                        f" Czas: {time_taken:.6f} sekund, Typ danych: integer")
                 for algo_name, algo_func in sort_algorithms.items():
                     data = generate_data_float(size, characteristic)
                     time_taken = measure_sort_time(algo_func, data)
                     data_type = "float"
                     writer.writerow([algo_name, size, characteristic, time_taken, data_type])
-                    results.append((algo_name, size, characteristic, time_taken, data_type))
+                    results_array.append((algo_name, size, characteristic, time_taken, data_type))
                     print(
-                        f"Algorytm: {algo_name}, Rozmiar: {size}, Charakterystyka: {characteristic}, Czas: {time_taken:.6f} sekund, Typ danych: float")
+                        f"(Próba: {counter}) Algorytm: {algo_name}, Rozmiar: {size}, Charakterystyka: {characteristic},"
+                        f" Czas: {time_taken:.6f} sekund, Typ danych: float")
 
-    return results
+    return results_array
 
 
 # Funkcja do wizualizacji wyników
-def visualize_results(results):
-    algorithms = list(set(result[0] for result in results))
-    data_sizes = sorted(list(set(result[1] for result in results)))
-    characteristics = list(set(result[2] for result in results))
+def visualize_results(results_array):
+    algorithms = list(set(result[0] for result in results_array))
+    data_sizes = sorted(list(set(result[1] for result in results_array)))
+    characteristics = list(set(result[2] for result in results_array))
 
     for characteristic in characteristics:
         plt.figure(figsize=(10, 6))
@@ -178,7 +180,7 @@ def visualize_results(results):
             for size in data_sizes:
                 # Wybieramy czas, który odpowiada rozmiarowi danych
                 time_for_size = next(
-                    (result[3] for result in results if
+                    (result[3] for result in results_array if
                      result[0] == algo and result[1] == size and result[2] == characteristic),
                     None
                 )

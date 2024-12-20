@@ -8,7 +8,7 @@ import heapq
 # Funkcja do generowania danych
 def generate_data_integer(size, order="random"):
     data = [random.randint(0, 1000) for _ in range(size)]
-#   data_type = "integer"
+    #   data_type = "integer"
     if order == "sorted":
         data.sort()
     elif order == "reverse":
@@ -22,7 +22,7 @@ def generate_data_integer(size, order="random"):
 
 def generate_data_float(size, order="random"):
     data = [random.uniform(0, 1000) for _ in range(size)]
-#    data_type = "float"
+    #    data_type = "float"
     if order == "sorted":
         data.sort()
     elif order == "reverse":
@@ -122,10 +122,11 @@ def measure_sort_time(sort_function, data):
 
 # Główna funkcja testująca i zapisująca wyniki
 def run_tests_and_save_to_csv(output_file):
+    estimated_attempts = 0
     counter = 0
     min_value = 10000
     max_value = 1000000
-    data_sizes = [random.randint(min_value, max_value) for _ in range(3)]
+    data_sizes = [random.randint(min_value, max_value) for _ in range(5)]
     data_characteristics = ["random", "sorted", "reverse", "partially sorted"]
     sort_algorithms = {
         "Quick Sort": quick_sort,
@@ -134,6 +135,13 @@ def run_tests_and_save_to_csv(output_file):
         "Bucket Sort": bucket_sort,
         "Heap Sort": heap_sort
     }
+
+    data_characteristics_length = len(data_characteristics)
+    data_sizes_length = len(data_sizes)
+    sort_algorithms_length = len(sort_algorithms)
+    estimated_attempts = data_characteristics_length * data_sizes_length * sort_algorithms_length
+    print(f"Program będzie potrzebował {estimated_attempts} prób aby posortować wszystkie tablice, wszystkimi "
+          f"algorytmami w każdym podanym ułożeniu")
 
     results_array = []
 

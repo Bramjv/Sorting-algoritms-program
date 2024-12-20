@@ -71,7 +71,7 @@ def merge(left, right):
     return result
 
 
-# Implementacja Tim Sort (wbudowany w Pythonie)
+# Implementacja Tim Sort 
 def tim_sort(arr):
     arr.sort()  # Python używa Tim Sort wewnętrznie w metodzie .sort()
     return arr
@@ -122,11 +122,10 @@ def measure_sort_time(sort_function, data):
 
 # Główna funkcja testująca i zapisująca wyniki
 def run_tests_and_save_to_csv(output_file):
-    estimated_attempts = 0
     counter = 0
-    min_value = 10000
+    min_value = 100000
     max_value = 1000000
-    data_sizes = [random.randint(min_value, max_value) for _ in range(5)]
+    data_sizes = [random.randint(min_value, max_value) for _ in range(3)]
     data_characteristics = ["random", "sorted", "reverse", "partially sorted"]
     sort_algorithms = {
         "Quick Sort": quick_sort,
@@ -141,7 +140,7 @@ def run_tests_and_save_to_csv(output_file):
     sort_algorithms_length = len(sort_algorithms)
     estimated_attempts = data_characteristics_length * data_sizes_length * sort_algorithms_length
     print(f"Program będzie potrzebował {estimated_attempts} prób aby posortować wszystkie tablice, wszystkimi "
-          f"algorytmami w każdym podanym ułożeniu")
+          f"algorytmami w każdym podanym ułożeniu.")
 
     results_array = []
 
